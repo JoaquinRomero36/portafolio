@@ -36,12 +36,12 @@ const projects: Project[] = [
 ]
 
 const skills: Skill[] = [
+  { name: "Angular", level: 85 },
   { name: "TypeScript", level: 85 },
-  { name: "React", level: 80 },
-  { name: "Node.js", level: 75 },
-  { name: "Python", level: 70 },
-  { name: "PostgreSQL", level: 65 },
-  { name: "Tailwind CSS", level: 85 },
+  { name: "Java / Spring Boot", level: 80 },
+  { name: "C# .NET", level: 75 },
+  { name: "PostgreSQL", level: 70 },
+  { name: "Docker", level: 60 },
 ]
 
 function HexIcon() {
@@ -87,10 +87,10 @@ function Hero() {
           Disponible para trabajar
         </div>
         <h1 className="text-5xl sm:text-6xl font-bold text-amber-950 mb-6 leading-tight">
-          Hola, soy <span className="text-amber-700">Tu Nombre</span>
+          Hola, soy <span className="text-amber-700">Joaquín Romero</span>
         </h1>
         <p className="text-lg text-amber-900/80 mb-8 leading-relaxed">
-          Desarrollador fullstack apasionado por crear aplicaciones web modernas y escalables. Especializado en React, TypeScript y Node.js.
+          Desarrollador Full Stack · Técnico en Programación egresado de UTN. Especializado en Angular, TypeScript y .NET.
         </p>
         <div className="flex items-center justify-center gap-4">
           <a href="#projects" className="bg-amber-700 hover:bg-amber-600 text-amber-50 px-6 py-3 rounded-lg font-medium transition shadow-sm">
@@ -115,13 +115,13 @@ function About() {
         </div>
         <div className="space-y-4 text-amber-900/70 leading-relaxed">
           <p>
-            Soy un desarrollador con experiencia en la creación de aplicaciones web. Me especializo en construir productos digitales que resuelven problemas reales.
+            Técnico en Programación egresado de la UTN, con formación en desarrollo web full stack y experiencia práctica en proyectos reales para clientes. He desarrollado aplicaciones completas listas para producción.
           </p>
           <p>
-            Actualmente me enfoco en el ecosistema JavaScript/TypeScript, trabajando con React para el frontend y Node.js para el backend. Me apasiona el aprendizaje continuo y estar al día con las últimas tecnologías.
+            Trabajo con Angular y TypeScript en el frontend, y con Java Spring Boot y C# .NET en el backend. Aplico arquitecturas limpias, metodologías ágiles y me mantengo en constante aprendizaje.
           </p>
           <p>
-            Cuando no estoy codeando, me gusta explorar nuevas herramientas, contribuir a proyectos open source y compartir conocimiento con la comunidad.
+            Me apasiona construir software que resuelva problemas reales. Busco sumarme a un equipo donde pueda aportar y seguir creciendo con cada desafío.
           </p>
         </div>
       </div>
@@ -213,13 +213,13 @@ function Contact() {
           ¿Tenés un proyecto en mente o querés colaborar? No dudes en escribirme.
         </p>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-          <a href="mailto:tu@email.com" className="bg-amber-700 hover:bg-amber-600 text-amber-50 px-6 py-3 rounded-lg font-medium transition w-full sm:w-auto text-center shadow-sm">
+          <a href="mailto:joaquinromerobeskow@gmail.com" className="bg-amber-700 hover:bg-amber-600 text-amber-50 px-6 py-3 rounded-lg font-medium transition w-full sm:w-auto text-center shadow-sm">
             Enviar email
           </a>
-          <a href="https://github.com/tuusuario" target="_blank" className="border-2 border-amber-300 hover:border-amber-500 text-amber-800 px-6 py-3 rounded-lg font-medium transition w-full sm:w-auto text-center">
+          <a href="https://github.com/JoaquinRomero36" target="_blank" className="border-2 border-amber-300 hover:border-amber-500 text-amber-800 px-6 py-3 rounded-lg font-medium transition w-full sm:w-auto text-center">
             GitHub
           </a>
-          <a href="https://linkedin.com/in/tuusuario" target="_blank" className="border-2 border-amber-300 hover:border-amber-500 text-amber-800 px-6 py-3 rounded-lg font-medium transition w-full sm:w-auto text-center">
+          <a href="https://www.linkedin.com/in/joaquinromero36" target="_blank" className="border-2 border-amber-300 hover:border-amber-500 text-amber-800 px-6 py-3 rounded-lg font-medium transition w-full sm:w-auto text-center">
             LinkedIn
           </a>
         </div>
@@ -232,7 +232,7 @@ function Footer() {
   return (
     <footer className="py-8 px-6 border-t-2 border-amber-200 bg-amber-100">
       <div className="max-w-5xl mx-auto text-center text-sm text-amber-700">
-        Hecho con 🐝 por Tu Nombre &copy; {new Date().getFullYear()}
+        Hecho con 🐝 por Joaquín Romero &copy; {new Date().getFullYear()}
       </div>
     </footer>
   )
