@@ -8,11 +8,6 @@ type Project = {
   github?: string
 }
 
-type Skill = {
-  name: string
-  level: number
-}
-
 const projects: Project[] = [
   {
     title: "Proyecto 1",
@@ -35,13 +30,19 @@ const projects: Project[] = [
   },
 ]
 
-const skills: Skill[] = [
-  { name: "Angular", level: 85 },
-  { name: "TypeScript", level: 85 },
-  { name: "Java / Spring Boot", level: 80 },
-  { name: "C# .NET", level: 75 },
-  { name: "PostgreSQL", level: 70 },
-  { name: "Docker", level: 60 },
+const techSkills = [
+  "Angular", "TypeScript", "JavaScript", "HTML5", "CSS3 / SCSS", "RxJS",
+  "Java", "Spring Boot", "C# .NET", "REST APIs", "Entity Framework",
+  "PostgreSQL", "Git", "GitHub", "Docker", "Postman"
+]
+
+const softSkills = [
+  "Comunicación efectiva",
+  "Colaboración en equipo",
+  "Aprendizaje continuo",
+  "Adaptabilidad",
+  "Autonomía y proactividad",
+  "Metodologías ágiles (Scrum)"
 ]
 
 function HexIcon() {
@@ -132,26 +133,32 @@ function About() {
 function Skills() {
   return (
     <section id="skills" className="py-24 px-6 bg-honeycomb">
-      <div className="max-w-3xl mx-auto">
+      <div className="max-w-4xl mx-auto">
         <div className="flex items-center gap-3 mb-12">
           <HexIcon />
           <h2 className="text-3xl font-bold text-amber-950">Skills</h2>
         </div>
-        <div className="grid sm:grid-cols-2 gap-6">
-          {skills.map((skill) => (
-            <div key={skill.name}>
-              <div className="flex justify-between text-sm mb-2">
-                <span className="text-amber-900 font-medium">{skill.name}</span>
-                <span className="text-amber-700">{skill.level}%</span>
-              </div>
-              <div className="h-2.5 bg-amber-200 rounded-full overflow-hidden">
-                <div
-                  className="h-full bg-amber-600 rounded-full transition-all duration-1000"
-                  style={{ width: `${skill.level}%` }}
-                />
-              </div>
+        <div className="grid md:grid-cols-2 gap-10">
+          <div>
+            <h3 className="text-lg font-semibold text-amber-800 mb-4">Técnicas</h3>
+            <div className="flex flex-wrap gap-2">
+              {techSkills.map((skill) => (
+                <span key={skill} className="bg-amber-200/70 text-amber-900 px-3 py-1.5 rounded-lg text-sm font-medium">
+                  {skill}
+                </span>
+              ))}
             </div>
-          ))}
+          </div>
+          <div>
+            <h3 className="text-lg font-semibold text-amber-800 mb-4">Blandas</h3>
+            <div className="flex flex-wrap gap-2">
+              {softSkills.map((skill) => (
+                <span key={skill} className="bg-amber-200/70 text-amber-900 px-3 py-1.5 rounded-lg text-sm font-medium">
+                  {skill}
+                </span>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </section>
