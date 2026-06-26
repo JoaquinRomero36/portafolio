@@ -235,16 +235,6 @@ function Contact() {
   )
 }
 
-function Footer() {
-  return (
-    <footer className="py-8 px-6 border-t-2 border-amber-200 bg-amber-100">
-      <div className="max-w-5xl mx-auto text-center text-sm text-amber-700">
-        Hecho con 🐝 por Joaquín Romero &copy; {new Date().getFullYear()}
-      </div>
-    </footer>
-  )
-}
-
 function App() {
   return (
     <div className="min-h-screen">
@@ -254,7 +244,6 @@ function App() {
       <Skills />
       <Projects />
       <Contact />
-      <Footer />
     </div>
   )
 }
