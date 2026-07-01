@@ -201,13 +201,12 @@ function Skills() {
 }
 
 function ProjectHexagon({ project, index, onSelect }: { project: Project; index: number; onSelect: (p: Project) => void }) {
-  const bgImage = project.images.length > 0 ? `/images/${project.id}/${project.images[0]}` : ''
   const isOffset = index >= 3
 
   return (
     <button
       onClick={() => onSelect(project)}
-      className="relative group cursor-pointer outline-none border-none"
+      className="relative group cursor-pointer outline-none border-none transition-transform duration-300 hover:scale-105"
       style={{
         width: 260,
         height: 220,
@@ -215,16 +214,14 @@ function ProjectHexagon({ project, index, onSelect }: { project: Project; index:
         marginRight: -20,
         marginLeft: isOffset ? 130 : 0,
         marginTop: isOffset ? -50 : 0,
-        background: '#92400e',
-        backgroundImage: bgImage ? `linear-gradient(to bottom, rgba(146,64,14,0.7), rgba(146,64,14,0.9)), url(${bgImage})` : undefined,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
+        backgroundColor: '#FEF3C7',
+        border: '2px solid #F59E0B'
       }}
     >
-      <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center transition-all duration-300 group-hover:bg-amber-950/40">
-        <h3 className="text-white font-bold text-lg leading-tight mb-1">{project.title}</h3>
-        <p className="text-amber-200 text-xs">{project.subtitle}</p>
-        <p className="text-amber-100/70 text-xs mt-2 line-clamp-2">{project.description}</p>
+      <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center">
+        <h3 className="text-amber-950 font-bold text-lg leading-tight mb-1">{project.title}</h3>
+        <p className="text-amber-700 text-xs font-medium">{project.subtitle}</p>
+        <p className="text-amber-900/70 text-xs mt-2 line-clamp-2 px-2">{project.description}</p>
       </div>
     </button>
   )
