@@ -1,32 +1,67 @@
 import { useState, useEffect } from 'react'
 
 type Project = {
+  id: string
   title: string
+  subtitle: string
   description: string
+  longDescription: string
   tags: string[]
-  link?: string
+  images: string[]
   github?: string
+  link?: string
 }
 
 const projects: Project[] = [
   {
-    title: "Proyecto 1",
-    description: "Descripción de tu proyecto más destacado. Explica qué problema resuelve y qué tecnologías usaste.",
-    tags: ["React", "Node.js", "TypeScript"],
-    github: "https://github.com/tuusuario/proyecto1",
+    id: 'turnero',
+    title: 'Sistema de Turnos',
+    subtitle: 'Centro de Salud · UNC',
+    description: 'App interna para gestión de turnos médicos con roles, calendario y estadísticas.',
+    longDescription: 'App interna para gestión de turnos médicos con roles diferenciados (secretario, operadora, profesional), calendario interactivo, estadísticas con gráficos SVG y reglas de negocio complejas. Desarrollado para la Universidad Nacional de Córdoba.',
+    tags: ['.NET 9', 'Angular 18', 'PostgreSQL', 'JWT', 'Docker'],
+    images: ['turnero_1.png', 'turnero_2.png', 'turnero_3.png', 'turnero_4.png'],
+    github: 'https://github.com/JoaquinRomero36',
   },
   {
-    title: "Proyecto 2",
-    description: "Otro proyecto interesante. Muestra tu versatilidad y capacidad de aprendizaje.",
-    tags: ["Python", "FastAPI", "PostgreSQL"],
-    github: "https://github.com/tuusuario/proyecto2",
+    id: 'tiendaRopa',
+    title: 'Seven Outfit',
+    subtitle: 'E-commerce · Iglesia Adventista',
+    description: 'Tienda online con catálogo, filtros, compra por WhatsApp y panel admin.',
+    longDescription: 'Tienda online con catálogo de ropa, filtros por categoría y talle, integración de compra por WhatsApp y panel de administración con CRUD completo y autenticación JWT.',
+    tags: ['.NET 10', 'Angular 19', 'PostgreSQL', 'JWT', 'AutoMapper'],
+    images: ['tienda_1.png', 'tienda_2.png', 'tienda_3.png', 'tienda_4.png'],
+    github: 'https://github.com/JoaquinRomero36',
   },
   {
-    title: "Proyecto 3",
-    description: "Un proyecto más para demostrar tu experiencia en diferentes áreas del desarrollo.",
-    tags: ["Next.js", "Tailwind", "MongoDB"],
-    link: "https://proyecto3.com",
-    github: "https://github.com/tuusuario/proyecto3",
+    id: 'chubut',
+    title: 'Chubut',
+    subtitle: 'Minijuegos para Marketing',
+    description: 'Tres minijuegos interactivos (ruleta, trivia, memotest) para eventos reales.',
+    longDescription: 'Desarrollo de tres minijuegos interactivos (ruleta, trivia y memotest) ejecutables offline, diseñados para uso real en eventos de la Lotería del Chubut. Implementación completa del frontend con lógica en TypeScript, manejo de estados y experiencia de usuario optimizada.',
+    tags: ['Angular', 'TypeScript', 'HTML', 'CSS'],
+    images: ['chubut_1.png', 'chubut_2.png', 'chubut_3.png', 'chubut_4.png', 'chubut_5.png', 'chubut_6.png'],
+    github: 'https://github.com/JoaquinRomero36',
+  },
+  {
+    id: 'pathfinder',
+    title: 'myPathfinders',
+    subtitle: 'Tesis de Grado',
+    description: 'App para gestión integral de clubes de Conquistadores.',
+    longDescription: 'Aplicación web para gestión integral de clubes de Conquistadores. Desarrollada de manera independiente como tesis de grado, aplicando arquitectura full stack de punta a punta con Spring Boot y Angular.',
+    tags: ['Spring Boot', 'Angular', 'Java', 'REST API'],
+    images: ['pathfinder_1.png', 'pathfinder_2.png', 'pathfinder_3.png', 'pathfinder_4.png', 'pathfinder_5.png', 'pathfinder_6.png', 'pathfinder_7.png'],
+    github: 'https://github.com/JoaquinRomero36',
+  },
+  {
+    id: 'gym',
+    title: 'Gym',
+    subtitle: 'Por definir',
+    description: 'Proyecto en desarrollo.',
+    longDescription: '',
+    tags: [],
+    images: ['gym_1.png', 'gym_2.png'],
+    github: 'https://github.com/JoaquinRomero36',
   },
 ]
 
@@ -45,9 +80,9 @@ const softSkills = [
   "Metodologías ágiles (Scrum)"
 ]
 
-function HexIcon() {
+function HexIcon({ className = "w-5 h-5" }: { className?: string }) {
   return (
-    <svg className="w-5 h-5 text-amber-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    <svg className={`${className} text-amber-600`} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
       <path d="M12 2L20 7V17L12 22L4 17V7Z" />
     </svg>
   )
@@ -66,7 +101,7 @@ function Navbar() {
     <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${scrolled ? "bg-amber-100/90 backdrop-blur border-b border-amber-300" : "bg-transparent"}`}>
       <div className="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
         <a href="#" className="flex items-center gap-2 text-xl font-bold text-amber-900">
-          <HexIcon /> Portfolio
+          <HexIcon /> Joaquín Romero
         </a>
         <div className="hidden sm:flex gap-6 text-sm text-amber-800">
           <a href="#about" className="hover:text-amber-600 transition">Sobre mí</a>
@@ -165,7 +200,129 @@ function Skills() {
   )
 }
 
+function ProjectHexagon({ project, index, onSelect }: { project: Project; index: number; onSelect: (p: Project) => void }) {
+  const bgImage = project.images.length > 0 ? `/images/${project.id}/${project.images[0]}` : ''
+  const isOffset = index >= 3
+
+  return (
+    <button
+      onClick={() => onSelect(project)}
+      className="relative group cursor-pointer outline-none border-none"
+      style={{
+        width: 260,
+        height: 220,
+        clipPath: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)',
+        marginRight: -20,
+        marginLeft: isOffset ? 130 : 0,
+        marginTop: isOffset ? -50 : 0,
+        background: '#92400e',
+        backgroundImage: bgImage ? `linear-gradient(to bottom, rgba(146,64,14,0.7), rgba(146,64,14,0.9)), url(${bgImage})` : undefined,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+      }}
+    >
+      <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center transition-all duration-300 group-hover:bg-amber-950/40">
+        <h3 className="text-white font-bold text-lg leading-tight mb-1">{project.title}</h3>
+        <p className="text-amber-200 text-xs">{project.subtitle}</p>
+        <p className="text-amber-100/70 text-xs mt-2 line-clamp-2">{project.description}</p>
+      </div>
+    </button>
+  )
+}
+
+function ProjectModal({ project, onClose }: { project: Project; onClose: () => void }) {
+  const [imageIndex, setImageIndex] = useState(0)
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose()
+      if (e.key === 'ArrowLeft') setImageIndex(i => Math.max(0, i - 1))
+      if (e.key === 'ArrowRight') setImageIndex(i => Math.min(project.images.length - 1, i + 1))
+    }
+    window.addEventListener('keydown', onKey)
+    document.body.style.overflow = 'hidden'
+    return () => {
+      window.removeEventListener('keydown', onKey)
+      document.body.style.overflow = ''
+    }
+  }, [onClose, project.images.length])
+
+  const currentImage = project.images.length > 0
+    ? `/images/${project.id}/${project.images[imageIndex]}`
+    : null
+
+  return (
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm" onClick={onClose}>
+      <div className="bg-amber-50 rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
+        <div className="p-6">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-3">
+              <HexIcon className="w-6 h-6" />
+              <div>
+                <h3 className="text-xl font-bold text-amber-950">{project.title}</h3>
+                <p className="text-sm text-amber-700">{project.subtitle}</p>
+              </div>
+            </div>
+            <button onClick={onClose} className="text-amber-600 hover:text-amber-800 text-2xl leading-none">&times;</button>
+          </div>
+
+          {currentImage && (
+            <div className="relative bg-amber-100 rounded-xl overflow-hidden mb-4">
+              <img
+                src={currentImage}
+                alt={`${project.title} screenshot ${imageIndex + 1}`}
+                className="w-full h-auto max-h-[50vh] object-contain"
+              />
+              {project.images.length > 1 && (
+                <div className="absolute inset-x-0 bottom-0 flex items-center justify-between p-3 bg-gradient-to-t from-black/50 to-transparent">
+                  <button
+                    onClick={() => setImageIndex(i => Math.max(0, i - 1))}
+                    disabled={imageIndex === 0}
+                    className="text-white bg-black/30 hover:bg-black/50 rounded-lg px-3 py-1 text-sm disabled:opacity-30"
+                  >
+                    ← Anterior
+                  </button>
+                  <span className="text-white text-sm">{imageIndex + 1} / {project.images.length}</span>
+                  <button
+                    onClick={() => setImageIndex(i => Math.min(project.images.length - 1, i + 1))}
+                    disabled={imageIndex === project.images.length - 1}
+                    className="text-white bg-black/30 hover:bg-black/50 rounded-lg px-3 py-1 text-sm disabled:opacity-30"
+                  >
+                    Siguiente →
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
+
+          <p className="text-amber-900/80 leading-relaxed mb-4">{project.longDescription || project.description}</p>
+
+          {project.tags.length > 0 && (
+            <div className="flex flex-wrap gap-2 mb-4">
+              {project.tags.map(tag => (
+                <span key={tag} className="bg-amber-200/70 text-amber-800 px-3 py-1 rounded-lg text-sm font-medium">
+                  {tag}
+                </span>
+              ))}
+            </div>
+          )}
+
+          <div className="flex gap-3">
+            {project.github && (
+              <a href={project.github} target="_blank" className="bg-amber-700 hover:bg-amber-600 text-amber-50 px-4 py-2 rounded-lg text-sm font-medium transition">
+                Ver en GitHub →
+              </a>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 function Projects() {
+  const [selected, setSelected] = useState<Project | null>(null)
+
   return (
     <section id="projects" className="py-24 px-6">
       <div className="max-w-5xl mx-auto">
@@ -173,37 +330,24 @@ function Projects() {
           <HexIcon />
           <h2 className="text-3xl font-bold text-amber-950">Proyectos</h2>
         </div>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {projects.map((project) => (
-            <div key={project.title} className="group bg-amber-50 border-2 border-amber-200 rounded-xl p-6 hover:border-amber-500 transition shadow-sm hover:shadow-md">
-              <div className="flex items-center gap-2 mb-3">
-                <HexIcon />
-                <h3 className="text-lg font-semibold text-amber-950">{project.title}</h3>
-              </div>
-              <p className="text-sm text-amber-900/70 mb-4 leading-relaxed">{project.description}</p>
-              <div className="flex flex-wrap gap-2 mb-4">
-                {project.tags.map((tag) => (
-                  <span key={tag} className="text-xs bg-amber-200/70 text-amber-800 px-2.5 py-1 rounded-full font-medium">
-                    {tag}
-                  </span>
-                ))}
-              </div>
-              <div className="flex gap-3">
-                {project.github && (
-                  <a href={project.github} target="_blank" className="text-sm text-amber-700 hover:text-amber-600 font-medium transition">
-                    GitHub →
-                  </a>
-                )}
-                {project.link && (
-                  <a href={project.link} target="_blank" className="text-sm text-amber-700 hover:text-amber-600 font-medium transition">
-                    Demo →
-                  </a>
-                )}
-              </div>
-            </div>
-          ))}
+
+        <div className="flex flex-col items-center overflow-hidden pb-8">
+          {/* Row 1: 3 hexagons */}
+          <div className="flex justify-center">
+            {projects.slice(0, 3).map((project, i) => (
+              <ProjectHexagon key={project.id} project={project} index={i} onSelect={setSelected} />
+            ))}
+          </div>
+          {/* Row 2: 2 hexagons (offset) */}
+          <div className="flex justify-center">
+            {projects.slice(3).map((project, i) => (
+              <ProjectHexagon key={project.id} project={project} index={i + 3} onSelect={setSelected} />
+            ))}
+          </div>
         </div>
       </div>
+
+      {selected && <ProjectModal project={selected} onClose={() => setSelected(null)} />}
     </section>
   )
 }
