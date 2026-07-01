@@ -202,26 +202,29 @@ function Skills() {
 
 function ProjectHexagon({ project, index, onSelect }: { project: Project; index: number; onSelect: (p: Project) => void }) {
   const isOffset = index >= 3
-
+  
   return (
     <button
       onClick={() => onSelect(project)}
-      className="relative group cursor-pointer outline-none border-none transition-transform duration-300 hover:scale-105"
+      className="relative group cursor-pointer outline-none transition-transform duration-300 hover:scale-105"
       style={{
         width: 260,
-        height: 220,
-        clipPath: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)',
-        marginRight: -20,
-        marginLeft: isOffset ? 130 : 0,
-        marginTop: isOffset ? -50 : 0,
-        backgroundColor: '#FEF3C7',
-        border: '2px solid #F59E0B'
+        height: 225,
+        marginRight: -25,
+        marginLeft: isOffset ? 130 : 0, 
+        marginTop: isOffset ? -55 : 0,
       }}
     >
-      <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center">
+      <svg className="w-full h-full drop-shadow-md" viewBox="0 0 260 225">
+        <polygon 
+          points="130,0 260,56 260,169 130,225 0,169 0,56" 
+          className="fill-amber-50 stroke-amber-500 stroke-[6px]" 
+        />
+      </svg>
+      
+      <div className="absolute inset-0 flex flex-col items-center justify-center p-8 text-center">
         <h3 className="text-amber-950 font-bold text-lg leading-tight mb-1">{project.title}</h3>
         <p className="text-amber-700 text-xs font-medium">{project.subtitle}</p>
-        <p className="text-amber-900/70 text-xs mt-2 line-clamp-2 px-2">{project.description}</p>
       </div>
     </button>
   )
@@ -321,21 +324,19 @@ function Projects() {
   const [selected, setSelected] = useState<Project | null>(null)
 
   return (
-    <section id="projects" className="py-24 px-6">
+    <section id="projects" className="py-24 px-6 bg-honeycomb">
       <div className="max-w-5xl mx-auto">
-        <div className="flex items-center gap-3 mb-12">
+        <div className="flex items-center gap-3 mb-16">
           <HexIcon />
           <h2 className="text-3xl font-bold text-amber-950">Proyectos</h2>
         </div>
 
-        <div className="flex flex-col items-center overflow-hidden pb-8">
-          {/* Row 1: 3 hexagons */}
+        <div className="flex flex-col items-center pb-20">
           <div className="flex justify-center">
             {projects.slice(0, 3).map((project, i) => (
               <ProjectHexagon key={project.id} project={project} index={i} onSelect={setSelected} />
             ))}
           </div>
-          {/* Row 2: 2 hexagons (offset) */}
           <div className="flex justify-center">
             {projects.slice(3).map((project, i) => (
               <ProjectHexagon key={project.id} project={project} index={i + 3} onSelect={setSelected} />
@@ -343,7 +344,6 @@ function Projects() {
           </div>
         </div>
       </div>
-
       {selected && <ProjectModal project={selected} onClose={() => setSelected(null)} />}
     </section>
   )
