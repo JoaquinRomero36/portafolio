@@ -172,19 +172,16 @@ function Sidebar() {
 function Hero() {
   return (
     <section id="hero" className="min-h-screen flex items-center justify-center px-6" style={{ scrollSnapAlign: 'start' }}>
-      <div className="animate-fade-up text-center max-w-2xl">
-        <div className="inline-flex items-center gap-2 bg-amber-950/10 border border-amber-950/20 rounded-full px-4 py-1.5 text-sm text-amber-900 mb-8">
-          <HexIcon />
-          Disponible para trabajar
-        </div>
+      <div className="animate-fade-up text-center max-w-3xl">
+
         <h1 className="text-5xl sm:text-6xl font-bold text-amber-950 mb-6 leading-tight">
           Hola, soy <span className="text-amber-700">Joaquín Romero</span>
         </h1>
-        <p className="text-lg text-amber-900/80 mb-8 leading-relaxed">
+        <p className="text-lg sm:text-xl text-amber-900/70 mb-10 leading-relaxed max-w-2xl mx-auto">
           Desarrollador Full Stack · Técnico en Programación egresado de UTN. Especializado en Angular, TypeScript y .NET.
         </p>
         <div className="flex items-center justify-center gap-4">
-          <a href="#projects" className="bg-amber-700 hover:bg-amber-600 text-amber-50 px-6 py-3 rounded-lg font-medium transition shadow-sm">
+          <a href="#projects" className="bg-amber-700 hover:bg-amber-600 text-amber-50 px-6 py-3 rounded-lg font-medium transition shadow-lg shadow-amber-700/30">
             Ver proyectos
           </a>
           <a href="#contact" className="border-2 border-amber-700 hover:bg-amber-700 hover:text-amber-50 text-amber-800 px-6 py-3 rounded-lg font-medium transition">
@@ -211,11 +208,16 @@ function About() {
   return (
     <Section id="about">
       <div className="max-w-3xl mx-auto">
-        <div className="flex items-center gap-3 mb-8">
-          <HexIcon />
-          <h2 className="text-3xl font-bold text-amber-950">Sobre mí</h2>
+        <div className="flex items-center gap-3 mb-10">
+          <div className="p-2 rounded-lg bg-amber-800/10 border border-amber-700/20">
+            <HexIcon className="w-5 h-5 text-amber-700" />
+          </div>
+          <div>
+            <h2 className="text-3xl font-bold text-amber-950">Sobre mí</h2>
+            <div className="w-10 h-1 bg-amber-500/60 rounded-full mt-1.5" />
+          </div>
         </div>
-        <div className="space-y-6 text-xl text-amber-900/70 leading-relaxed">
+        <div className="bg-white/20 backdrop-blur-sm border border-amber-200/40 rounded-2xl p-8 space-y-5 text-lg text-amber-900/80 leading-relaxed shadow-sm">
           <p>
             Técnico en Programación egresado de la UTN, con formación en desarrollo web full stack y experiencia práctica en proyectos reales para clientes. He desarrollado aplicaciones completas listas para producción.
           </p>
@@ -236,25 +238,36 @@ function Skills() {
     <Section id="skills">
       <div className="max-w-4xl mx-auto">
         <div className="flex items-center gap-3 mb-12">
-          <HexIcon />
-          <h2 className="text-3xl font-bold text-amber-950">Skills</h2>
-        </div>
-        <div className="grid md:grid-cols-2 gap-10">
+          <div className="p-2 rounded-lg bg-amber-800/10 border border-amber-700/20">
+            <HexIcon className="w-5 h-5 text-amber-700" />
+          </div>
           <div>
-            <h3 className="text-lg font-semibold text-amber-800 mb-4">Técnicas</h3>
+            <h2 className="text-3xl font-bold text-amber-950">Skills</h2>
+            <div className="w-10 h-1 bg-amber-500/60 rounded-full mt-1.5" />
+          </div>
+        </div>
+        <div className="grid md:grid-cols-2 gap-8">
+          <div className="bg-white/20 backdrop-blur-sm border border-amber-200/40 rounded-2xl p-6 shadow-sm">
+            <h3 className="text-lg font-semibold text-amber-800 mb-5 flex items-center gap-2">
+              <div className="w-1.5 h-1.5 rounded-full bg-amber-600 shadow-[0_0_4px_rgba(217,119,6,0.4)]" />
+              Técnicas
+            </h3>
             <div className="flex flex-wrap gap-2">
               {techSkills.map((skill) => (
-                <span key={skill} className="bg-amber-200/70 text-amber-900 px-3 py-1.5 rounded-lg text-sm font-medium">
+                <span key={skill} className="bg-amber-100/80 text-amber-900 px-3 py-1.5 rounded-lg text-sm font-medium border border-amber-200/50">
                   {skill}
                 </span>
               ))}
             </div>
           </div>
-          <div>
-            <h3 className="text-lg font-semibold text-amber-800 mb-4">Blandas</h3>
+          <div className="bg-white/20 backdrop-blur-sm border border-amber-200/40 rounded-2xl p-6 shadow-sm">
+            <h3 className="text-lg font-semibold text-amber-800 mb-5 flex items-center gap-2">
+              <div className="w-1.5 h-1.5 rounded-full bg-amber-600 shadow-[0_0_4px_rgba(217,119,6,0.4)]" />
+              Blandas
+            </h3>
             <div className="flex flex-wrap gap-2">
               {softSkills.map((skill) => (
-                <span key={skill} className="bg-amber-200/70 text-amber-900 px-3 py-1.5 rounded-lg text-sm font-medium">
+                <span key={skill} className="bg-amber-100/80 text-amber-900 px-3 py-1.5 rounded-lg text-sm font-medium border border-amber-200/50">
                   {skill}
                 </span>
               ))}
@@ -388,8 +401,13 @@ function Projects() {
     <Section id="projects">
       <div className="max-w-4xl mx-auto">
         <div className="flex items-center gap-3 mb-16">
-          <HexIcon />
-          <h2 className="text-3xl font-bold text-amber-950">Proyectos</h2>
+          <div className="p-2 rounded-lg bg-amber-800/10 border border-amber-700/20">
+            <HexIcon className="w-5 h-5 text-amber-700" />
+          </div>
+          <div>
+            <h2 className="text-3xl font-bold text-amber-950">Proyectos</h2>
+            <div className="w-10 h-1 bg-amber-500/60 rounded-full mt-1.5" />
+          </div>
         </div>
 
         <div className="flex justify-center">
@@ -415,20 +433,25 @@ function Contact() {
     <Section id="contact">
       <div className="max-w-xl mx-auto text-center">
         <div className="flex items-center justify-center gap-3 mb-4">
-          <HexIcon />
-          <h2 className="text-3xl font-bold text-amber-950">Contacto</h2>
+          <div className="p-2 rounded-lg bg-amber-800/10 border border-amber-700/20">
+            <HexIcon className="w-5 h-5 text-amber-700" />
+          </div>
+          <div className="text-left">
+            <h2 className="text-3xl font-bold text-amber-950">Contacto</h2>
+            <div className="w-10 h-1 bg-amber-500/60 rounded-full mt-1.5" />
+          </div>
         </div>
-        <p className="text-amber-900/70 mb-8">
+        <p className="text-amber-900/70 mb-10 text-lg">
           ¿Tenés un proyecto en mente o querés colaborar? No dudes en escribirme.
         </p>
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-          <a href="mailto:joaquinromerobeskow@gmail.com" className="bg-amber-700 hover:bg-amber-600 text-amber-50 px-6 py-3 rounded-lg font-medium transition w-full sm:w-auto text-center shadow-sm">
+        <div className="bg-white/20 backdrop-blur-sm border border-amber-200/40 rounded-2xl p-6 shadow-sm flex flex-col sm:flex-row items-center justify-center gap-4">
+          <a href="mailto:joaquinromerobeskow@gmail.com" className="bg-amber-700 hover:bg-amber-600 text-amber-50 px-6 py-3 rounded-lg font-medium transition w-full sm:w-auto text-center shadow-lg shadow-amber-700/30">
             Enviar email
           </a>
-          <a href="https://github.com/JoaquinRomero36" target="_blank" className="border-2 border-amber-300 hover:border-amber-500 text-amber-800 px-6 py-3 rounded-lg font-medium transition w-full sm:w-auto text-center">
+          <a href="https://github.com/JoaquinRomero36" target="_blank" className="border border-amber-300 hover:border-amber-500 bg-white/30 hover:bg-white/50 text-amber-800 px-6 py-3 rounded-lg font-medium transition w-full sm:w-auto text-center">
             GitHub
           </a>
-          <a href="https://www.linkedin.com/in/joaquinromero36" target="_blank" className="border-2 border-amber-300 hover:border-amber-500 text-amber-800 px-6 py-3 rounded-lg font-medium transition w-full sm:w-auto text-center">
+          <a href="https://www.linkedin.com/in/joaquinromero36" target="_blank" className="border border-amber-300 hover:border-amber-500 bg-white/30 hover:bg-white/50 text-amber-800 px-6 py-3 rounded-lg font-medium transition w-full sm:w-auto text-center">
             LinkedIn
           </a>
         </div>
