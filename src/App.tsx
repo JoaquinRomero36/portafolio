@@ -104,24 +104,66 @@ function HexIcon({ className = "w-5 h-5" }: { className?: string }) {
   )
 }
 
-function Navbar() {
-  const [scrolled, setScrolled] = useState(false)
+const sections = ['hero', 'about', 'skills', 'projects', 'contact']
+const sectionLabels: Record<string, string> = {
+  hero: 'Inicio', about: 'Sobre mí', skills: 'Skills', projects: 'Proyectos', contact: 'Contacto'
+}
+
+function Sidebar() {
+  const [active, setActive] = useState('hero')
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 50)
-    window.addEventListener("scroll", onScroll)
-    return () => window.removeEventListener("scroll", onScroll)
+    const obs = new IntersectionObserver((entries) => {
+      const visible = entries.filter(e => e.isIntersecting).sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)
+      if (visible.length > 0) setActive(visible[0].target.id)
+    }, { threshold: 0.3, rootMargin: '-80px 0px 0px 0px' })
+    sections.forEach(id => {
+      const el = document.getElementById(id)
+      if (el) obs.observe(el)
+    })
+    return () => obs.disconnect()
   }, [])
 
+  const activeIndex = sections.indexOf(active)
+  const dropTop = activeIndex >= 0 ? activeIndex * 88 + 20 : 20
+
   return (
-    <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${scrolled ? "bg-amber-100/90 backdrop-blur border-b border-amber-300" : "bg-transparent"}`}>
-      <div className="max-w-5xl mx-auto px-6 h-16 flex items-center justify-end">
-        <div className="hidden sm:flex gap-8 text-base text-amber-800">
-          <a href="#about" className="hover:text-amber-600 transition">Sobre mí</a>
-          <a href="#skills" className="hover:text-amber-600 transition">Skills</a>
-          <a href="#projects" className="hover:text-amber-600 transition">Proyectos</a>
-          <a href="#contact" className="hover:text-amber-600 transition">Contacto</a>
+    <nav className="fixed left-0 top-0 h-full z-50 w-24 bg-gradient-to-b from-amber-950 via-amber-900 to-amber-950 border-r border-amber-700/30 flex flex-col items-center py-8 gap-0 shadow-2xl shadow-amber-950/50">
+      <div className="relative flex flex-col items-center gap-0">
+        <div
+          className="absolute w-4 h-4 rounded-full transition-all duration-700 ease-[cubic-bezier(0.34,1.56,0.64,1)] flex items-center justify-center"
+          style={{
+            top: dropTop,
+            left: '50%',
+            marginLeft: -8,
+            background: 'radial-gradient(circle at 35% 30%, #fbbf24, #d97706)',
+            boxShadow: '0 0 12px rgba(217,119,6,0.6), inset 0 1px 2px rgba(255,255,255,0.3)',
+          }}
+        >
+          <div className="w-1.5 h-1.5 rounded-full bg-white/60" />
         </div>
+        <div className="absolute w-[2px] rounded-full transition-all duration-700 ease-[cubic-bezier(0.34,1.56,0.64,1)]"
+          style={{
+            top: dropTop + 18,
+            height: 4,
+            left: '50%',
+            marginLeft: -1,
+            background: 'linear-gradient(to bottom, #d97706, transparent)',
+            opacity: 0.6,
+          }}
+        />
+        {sections.map((id) => (
+          <a
+            key={id}
+            href={`#${id}`}
+            className={`relative z-10 w-full h-[88px] flex flex-col items-center justify-center gap-1 text-xs font-medium tracking-widest uppercase transition-all duration-500 ${active === id ? 'text-amber-300' : 'text-amber-600/50 hover:text-amber-400/80'}`}
+          >
+            <span className={`transition-all duration-500 ${active === id ? 'scale-110 drop-shadow-[0_0_6px_rgba(251,191,36,0.5)]' : ''}`}>
+              {sectionLabels[id]}
+            </span>
+            <div className={`w-1 h-1 rounded-full transition-all duration-500 ${active === id ? 'bg-amber-400 shadow-[0_0_6px_rgba(251,191,36,0.6)]' : 'bg-transparent'}`} />
+          </a>
+        ))}
       </div>
     </nav>
   )
@@ -129,7 +171,7 @@ function Navbar() {
 
 function Hero() {
   return (
-    <section className="min-h-screen flex items-center justify-center px-6" style={{ scrollSnapAlign: 'start' }}>
+    <section id="hero" className="min-h-screen flex items-center justify-center px-6" style={{ scrollSnapAlign: 'start' }}>
       <div className="animate-fade-up text-center max-w-2xl">
         <div className="inline-flex items-center gap-2 bg-amber-950/10 border border-amber-950/20 rounded-full px-4 py-1.5 text-sm text-amber-900 mb-8">
           <HexIcon />
@@ -397,8 +439,8 @@ function Contact() {
 
 function App() {
   return (
-    <div className="min-h-screen">
-      <Navbar />
+    <div className="min-h-screen pl-24">
+      <Sidebar />
       <Hero />
       <About />
       <Skills />
