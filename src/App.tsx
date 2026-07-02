@@ -115,11 +115,8 @@ function Navbar() {
 
   return (
     <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${scrolled ? "bg-amber-100/90 backdrop-blur border-b border-amber-300" : "bg-transparent"}`}>
-      <div className="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
-        <a href="#" className="flex items-center gap-2 text-xl font-bold text-amber-900">
-          <HexIcon /> Joaquín Romero
-        </a>
-        <div className="hidden sm:flex gap-6 text-sm text-amber-800">
+      <div className="max-w-5xl mx-auto px-6 h-16 flex items-center justify-end">
+        <div className="hidden sm:flex gap-8 text-base text-amber-800">
           <a href="#about" className="hover:text-amber-600 transition">Sobre mí</a>
           <a href="#skills" className="hover:text-amber-600 transition">Skills</a>
           <a href="#projects" className="hover:text-amber-600 transition">Proyectos</a>
@@ -158,7 +155,7 @@ function Hero() {
 }
 
 function Section({ id, children, className = '' }: { id?: string; children: React.ReactNode; className?: string }) {
-  const [ref, inView] = useInView(0.2)
+  const [ref, inView] = useInView(0.4)
   return (
     <section ref={ref} id={id} className={`min-h-screen flex items-center justify-center px-6 py-12 ${className}`} style={{ scrollSnapAlign: 'start' }}>
       <div className={`w-full transition-all duration-700 ${inView ? 'animate-fade-up' : 'section-hidden'}`}>
@@ -176,7 +173,7 @@ function About() {
           <HexIcon />
           <h2 className="text-3xl font-bold text-amber-950">Sobre mí</h2>
         </div>
-        <div className="space-y-4 text-amber-900/70 leading-relaxed">
+        <div className="space-y-6 text-xl text-amber-900/70 leading-relaxed">
           <p>
             Técnico en Programación egresado de la UTN, con formación en desarrollo web full stack y experiencia práctica en proyectos reales para clientes. He desarrollado aplicaciones completas listas para producción.
           </p>
@@ -274,18 +271,18 @@ function ProjectModal({ project, onClose }: { project: Project; onClose: () => v
     : null
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm" onClick={onClose}>
-      <div className="bg-amber-50 rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4" onClick={onClose}>
+      <div className="relative bg-amber-50 rounded-2xl max-w-lg w-full max-h-[80vh] overflow-y-auto shadow-xl" onClick={e => e.stopPropagation()}>
+        <button onClick={onClose} className="absolute top-4 right-4 z-10 bg-amber-200 hover:bg-amber-300 text-amber-800 rounded-full w-8 h-8 flex items-center justify-center text-lg font-bold leading-none shadow-sm transition">
+          ×
+        </button>
         <div className="p-6">
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center gap-3">
-              <HexIcon className="w-6 h-6" />
-              <div>
-                <h3 className="text-xl font-bold text-amber-950">{project.title}</h3>
-                <p className="text-sm text-amber-700">{project.subtitle}</p>
-              </div>
+          <div className="flex items-center gap-3 mb-4">
+            <HexIcon className="w-6 h-6" />
+            <div>
+              <h3 className="text-xl font-bold text-amber-950">{project.title}</h3>
+              <p className="text-sm text-amber-700">{project.subtitle}</p>
             </div>
-            <button onClick={onClose} className="text-amber-600 hover:text-amber-800 text-2xl leading-none">&times;</button>
           </div>
 
           {currentImage && (
