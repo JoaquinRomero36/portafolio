@@ -200,33 +200,28 @@ function Skills() {
   )
 }
 
-function ProjectHexagon({ project, index, onSelect }: { project: Project; index: number; onSelect: (p: Project) => void }) {
-  const isOffset = index >= 3
-  
+function HexProject({ project, onSelect, x, y }: { project: Project; onSelect: (p: Project) => void; x: number; y: number }) {
   return (
-    <button
-      onClick={() => onSelect(project)}
-      className="relative group cursor-pointer outline-none transition-transform duration-300 hover:scale-105"
-      style={{
-        width: 260,
-        height: 225,
-        marginRight: -25,
-        marginLeft: isOffset ? 130 : 0, 
-        marginTop: isOffset ? -55 : 0,
-      }}
-    >
-      <svg className="w-full h-full drop-shadow-md" viewBox="0 0 260 225">
-        <polygon 
-          points="130,0 260,56 260,169 130,225 0,169 0,56" 
-          className="fill-amber-50 stroke-amber-500 stroke-[6px]" 
-        />
-      </svg>
-      
-      <div className="absolute inset-0 flex flex-col items-center justify-center p-8 text-center">
-        <h3 className="text-amber-950 font-bold text-lg leading-tight mb-1">{project.title}</h3>
-        <p className="text-amber-700 text-xs font-medium">{project.subtitle}</p>
+    <button onClick={() => onSelect(project)}
+      className="absolute group cursor-pointer transition-transform duration-300 hover:scale-105 hover:z-10 hover:drop-shadow-xl outline-none"
+      style={{ width: 160, height: 184, left: x, top: y, clipPath: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)', backgroundColor: '#ff9800' }}>
+      <div className="absolute top-[5px] left-[5px] right-[5px] bottom-[5px] flex items-center justify-center p-3 text-center"
+        style={{ backgroundColor: '#ffeb3b', clipPath: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)' }}>
+        <div>
+          <h3 className="text-amber-950 font-bold text-sm leading-tight mb-0.5">{project.title}</h3>
+          <p className="text-amber-800 text-[10px] font-medium">{project.subtitle}</p>
+        </div>
       </div>
     </button>
+  )
+}
+
+function HexEmpty({ x, y }: { x: number; y: number }) {
+  return (
+    <div className="absolute" style={{ width: 160, height: 184, left: x, top: y, clipPath: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)', backgroundColor: '#ff9800' }}>
+      <div className="absolute top-[5px] left-[5px] right-[5px] bottom-[5px]"
+        style={{ backgroundColor: '#ffeb3b', clipPath: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)' }} />
+    </div>
   )
 }
 
@@ -324,23 +319,23 @@ function Projects() {
   const [selected, setSelected] = useState<Project | null>(null)
 
   return (
-    <section id="projects" className="py-24 px-6 bg-honeycomb">
-      <div className="max-w-5xl mx-auto">
+    <section id="projects" className="py-24 px-6 bg-amber-50">
+      <div className="max-w-4xl mx-auto">
         <div className="flex items-center gap-3 mb-16">
           <HexIcon />
           <h2 className="text-3xl font-bold text-amber-950">Proyectos</h2>
         </div>
 
-        <div className="flex flex-col items-center pb-20">
-          <div className="flex justify-center">
-            {projects.slice(0, 3).map((project, i) => (
-              <ProjectHexagon key={project.id} project={project} index={i} onSelect={setSelected} />
-            ))}
-          </div>
-          <div className="flex justify-center">
-            {projects.slice(3).map((project, i) => (
-              <ProjectHexagon key={project.id} project={project} index={i + 3} onSelect={setSelected} />
-            ))}
+        <div className="flex justify-center">
+          <div className="relative" style={{ width: 760, height: 480 }}>
+            <HexProject project={projects[0]} onSelect={setSelected} x={85} y={0} />
+            <HexProject project={projects[1]} onSelect={setSelected} x={255} y={0} />
+            <HexEmpty x={595} y={0} />
+            <HexEmpty x={0} y={148} />
+            <HexProject project={projects[2]} onSelect={setSelected} x={170} y={148} />
+            <HexEmpty x={340} y={148} />
+            <HexProject project={projects[3]} onSelect={setSelected} x={510} y={148} />
+            <HexProject project={projects[4]} onSelect={setSelected} x={425} y={296} />
           </div>
         </div>
       </div>
