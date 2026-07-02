@@ -1,4 +1,20 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
+
+function useInView(threshold = 0.3) {
+  const ref = useRef<HTMLElement>(null)
+  const [inView, setInView] = useState(false)
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const obs = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) { setInView(true); obs.disconnect() } },
+      { threshold }
+    )
+    obs.observe(el)
+    return () => obs.disconnect()
+  }, [threshold])
+  return [ref, inView] as const
+}
 
 type Project = {
   id: string
@@ -116,8 +132,8 @@ function Navbar() {
 
 function Hero() {
   return (
-    <section className="min-h-screen flex items-center justify-center px-6 bg-honeycomb-hero">
-      <div className="text-center max-w-2xl">
+    <section className="min-h-screen flex items-center justify-center px-6" style={{ scrollSnapAlign: 'start' }}>
+      <div className="animate-fade-up text-center max-w-2xl">
         <div className="inline-flex items-center gap-2 bg-amber-950/10 border border-amber-950/20 rounded-full px-4 py-1.5 text-sm text-amber-900 mb-8">
           <HexIcon />
           Disponible para trabajar
@@ -141,9 +157,20 @@ function Hero() {
   )
 }
 
+function Section({ id, children, className = '' }: { id?: string; children: React.ReactNode; className?: string }) {
+  const [ref, inView] = useInView(0.2)
+  return (
+    <section ref={ref} id={id} className={`min-h-screen flex items-center justify-center px-6 py-12 ${className}`} style={{ scrollSnapAlign: 'start' }}>
+      <div className={`w-full transition-all duration-700 ${inView ? 'animate-fade-up' : 'section-hidden'}`}>
+        {children}
+      </div>
+    </section>
+  )
+}
+
 function About() {
   return (
-    <section id="about" className="py-24 px-6">
+    <Section id="about">
       <div className="max-w-3xl mx-auto">
         <div className="flex items-center gap-3 mb-8">
           <HexIcon />
@@ -161,13 +188,13 @@ function About() {
           </p>
         </div>
       </div>
-    </section>
+    </Section>
   )
 }
 
 function Skills() {
   return (
-    <section id="skills" className="py-24 px-6 bg-honeycomb">
+    <Section id="skills">
       <div className="max-w-4xl mx-auto">
         <div className="flex items-center gap-3 mb-12">
           <HexIcon />
@@ -196,7 +223,7 @@ function Skills() {
           </div>
         </div>
       </div>
-    </section>
+    </Section>
   )
 }
 
@@ -204,12 +231,12 @@ function HexProject({ project, onSelect, x, y }: { project: Project; onSelect: (
   return (
     <button onClick={() => onSelect(project)}
       className="absolute group cursor-pointer transition-transform duration-300 hover:scale-105 hover:z-10 hover:drop-shadow-xl outline-none"
-      style={{ width: 160, height: 184, left: x, top: y, clipPath: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)', backgroundColor: '#ff9800' }}>
+      style={{ width: 160, height: 184, left: x, top: y, clipPath: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)', backgroundColor: '#d97706' }}>
       <div className="absolute top-[5px] left-[5px] right-[5px] bottom-[5px] flex items-center justify-center p-3 text-center"
-        style={{ backgroundColor: '#ffeb3b', clipPath: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)' }}>
+        style={{ backgroundColor: '#fef3c7', clipPath: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)' }}>
         <div>
           <h3 className="text-amber-950 font-bold text-sm leading-tight mb-0.5">{project.title}</h3>
-          <p className="text-amber-800 text-[10px] font-medium">{project.subtitle}</p>
+          <p className="text-amber-700 text-[10px] font-medium">{project.subtitle}</p>
         </div>
       </div>
     </button>
@@ -218,9 +245,9 @@ function HexProject({ project, onSelect, x, y }: { project: Project; onSelect: (
 
 function HexEmpty({ x, y }: { x: number; y: number }) {
   return (
-    <div className="absolute" style={{ width: 160, height: 184, left: x, top: y, clipPath: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)', backgroundColor: '#ff9800' }}>
+    <div className="absolute" style={{ width: 160, height: 184, left: x, top: y, clipPath: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)', backgroundColor: '#f59e0b' }}>
       <div className="absolute top-[5px] left-[5px] right-[5px] bottom-[5px]"
-        style={{ backgroundColor: '#ffeb3b', clipPath: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)' }} />
+        style={{ backgroundColor: '#fef3c7', clipPath: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)' }} />
     </div>
   )
 }
@@ -319,7 +346,7 @@ function Projects() {
   const [selected, setSelected] = useState<Project | null>(null)
 
   return (
-    <section id="projects" className="py-24 px-6 bg-amber-50">
+    <Section id="projects">
       <div className="max-w-4xl mx-auto">
         <div className="flex items-center gap-3 mb-16">
           <HexIcon />
@@ -340,13 +367,13 @@ function Projects() {
         </div>
       </div>
       {selected && <ProjectModal project={selected} onClose={() => setSelected(null)} />}
-    </section>
+    </Section>
   )
 }
 
 function Contact() {
   return (
-    <section id="contact" className="py-24 px-6 bg-honeycomb">
+    <Section id="contact">
       <div className="max-w-xl mx-auto text-center">
         <div className="flex items-center justify-center gap-3 mb-4">
           <HexIcon />
@@ -367,7 +394,7 @@ function Contact() {
           </a>
         </div>
       </div>
-    </section>
+    </Section>
   )
 }
 
