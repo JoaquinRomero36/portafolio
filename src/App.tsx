@@ -1,4 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
+import type { FormEvent } from 'react'
+import emailjs from '@emailjs/browser'
 import AnimatedTabBar from './components/ui/animated-tab-bar'
 
 function useInView(threshold = 0.3) {
@@ -443,6 +445,76 @@ function Projects() {
   )
 }
 
+function ContactForm() {
+  const [company, setCompany] = useState('')
+  const [message, setMessage] = useState('')
+  const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle')
+
+  const SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID as string
+  const TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID as string
+  const PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY as string
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault()
+    if (status === 'sending') return
+    setStatus('sending')
+    try {
+      await emailjs.send(
+        SERVICE_ID,
+        TEMPLATE_ID,
+        { name: company, message },
+        { publicKey: PUBLIC_KEY },
+      )
+      setCompany('')
+      setMessage('')
+      setStatus('sent')
+    } catch {
+      setStatus('error')
+    }
+  }
+
+  const inputClass =
+    'w-full px-4 py-3 rounded-lg bg-white/30 border border-amber-300/40 placeholder:text-amber-900/40 text-amber-950 focus:outline-none focus:ring-2 focus:ring-amber-500/50 focus:bg-white/40 transition'
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-4 text-left">
+      <input
+        type="text"
+        value={company}
+        onChange={(e) => setCompany(e.target.value)}
+        placeholder="Tu nombre / empresa"
+        className={inputClass}
+        required
+      />
+      <textarea
+        value={message}
+        onChange={(e) => setMessage(e.target.value)}
+        placeholder="Detalles del trabajo..."
+        rows={5}
+        className={`${inputClass} resize-none`}
+        required
+      />
+      <button
+        type="submit"
+        disabled={status === 'sending'}
+        className="w-full bg-amber-700 hover:bg-amber-600 disabled:opacity-60 disabled:cursor-not-allowed text-amber-50 px-6 py-3 rounded-lg font-medium transition shadow-lg shadow-amber-700/30"
+      >
+        {status === 'sending' ? 'Enviando...' : 'Enviar mensaje'}
+      </button>
+      {status === 'sent' && (
+        <p className="text-amber-800 bg-amber-500/10 border border-amber-500/30 rounded-lg px-4 py-3 text-sm">
+          ¡Mensaje enviado! Te respondo a la brevedad.
+        </p>
+      )}
+      {status === 'error' && (
+        <p className="text-red-700 bg-red-500/10 border border-red-500/30 rounded-lg px-4 py-3 text-sm">
+          No se pudo enviar el mensaje. Intentalo de nuevo.
+        </p>
+      )}
+    </form>
+  )
+}
+
 function Contact() {
   return (
     <Section id="contact">
@@ -456,16 +528,16 @@ function Contact() {
             <div className="w-10 h-1 bg-amber-500/60 rounded-full mt-1.5" />
           </div>
         </div>
-        <div className="bg-white/20 backdrop-blur-sm border border-amber-200/40 rounded-2xl p-6 shadow-sm flex flex-col sm:flex-row items-center justify-center gap-4 mt-10">
-          <a href="mailto:joaquinromerobeskow@gmail.com" className="bg-amber-700 hover:bg-amber-600 text-amber-50 px-6 py-3 rounded-lg font-medium transition w-full sm:w-auto text-center shadow-lg shadow-amber-700/30">
-            Enviar email
-          </a>
-          <a href="https://github.com/JoaquinRomero36" target="_blank" className="border border-amber-300 hover:border-amber-500 bg-white/30 hover:bg-white/50 text-amber-800 px-6 py-3 rounded-lg font-medium transition w-full sm:w-auto text-center">
-            GitHub
-          </a>
-          <a href="https://www.linkedin.com/in/joaquinromero36" target="_blank" className="border border-amber-300 hover:border-amber-500 bg-white/30 hover:bg-white/50 text-amber-800 px-6 py-3 rounded-lg font-medium transition w-full sm:w-auto text-center">
-            LinkedIn
-          </a>
+        <div className="bg-white/20 backdrop-blur-sm border border-amber-200/40 rounded-2xl p-6 shadow-sm mt-10">
+          <ContactForm />
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-6 pt-6 border-t border-amber-200/40">
+            <a href="https://github.com/JoaquinRomero36" target="_blank" className="border border-amber-300 hover:border-amber-500 bg-white/30 hover:bg-white/50 text-amber-800 px-6 py-3 rounded-lg font-medium transition w-full sm:w-auto text-center">
+              GitHub
+            </a>
+            <a href="https://www.linkedin.com/in/joaquinromero36" target="_blank" className="border border-amber-300 hover:border-amber-500 bg-white/30 hover:bg-white/50 text-amber-800 px-6 py-3 rounded-lg font-medium transition w-full sm:w-auto text-center">
+              LinkedIn
+            </a>
+          </div>
         </div>
       </div>
     </Section>
