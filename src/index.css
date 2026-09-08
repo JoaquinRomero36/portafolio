@@ -38,3 +38,108 @@
     transform: translateY(80px) scale(0.96);
   }
 }
+
+@layer components {
+  .tabbar {
+    --timeOut: 0.75s;
+    --barBg: #451a03;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    padding: 1.8em 0;
+    border-radius: 0.9em;
+    background: var(--barBg);
+    box-shadow: 0 10px 30px rgba(120, 53, 15, 0.35);
+    border: 1px solid rgba(217, 119, 6, 0.35);
+  }
+
+  .tabbar__item {
+    flex: 1;
+    position: relative;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    padding: 2.6em 1.6em;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(251, 191, 36, 0.6);
+    transition:
+      color 0.4s ease,
+      transform var(--timeOut) cubic-bezier(0.34, 1.56, 0.64, 1);
+    outline: none;
+  }
+
+  .tabbar__item::before {
+    content: "";
+    z-index: -1;
+    position: absolute;
+    width: 4.2em;
+    height: 4.2em;
+    border-radius: 50%;
+    background-color: var(--bgColorItem);
+    transform: scale(0);
+    transition: transform var(--timeOut) cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .tabbar__item:hover {
+    color: rgba(253, 230, 138, 0.9);
+  }
+
+  .tabbar__item.active {
+    transform: translate3d(0.5em, 0, 0);
+    color: #fff;
+    text-shadow: 0 0 12px rgba(255, 255, 255, 0.35);
+  }
+
+  .tabbar__item.active::before {
+    transform: scale(1);
+  }
+
+  .tabbar__border {
+    position: absolute;
+    top: 0;
+    right: -22px;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    will-change: transform;
+    background: var(--barBg);
+    transition: transform var(--timeOut) cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+}
+
+@keyframes strok {
+  100% {
+    stroke-dashoffset: 400;
+  }
+}
+
+.tabbar-demo {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.4s ease;
+}
+
+.tabbar-demo-icon {
+  width: 24px;
+  height: 24px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.tabbar .tabbar-demo-icon {
+  color: inherit;
+}

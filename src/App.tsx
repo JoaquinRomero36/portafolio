@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
+import AnimatedTabBar from './components/ui/animated-tab-bar'
 
 function useInView(threshold = 0.3) {
   const ref = useRef<HTMLElement>(null)
@@ -36,8 +37,8 @@ const projects: Project[] = [
     description: 'App interna para gestión de turnos médicos con roles, calendario y estadísticas.',
     longDescription: 'App interna para gestión de turnos médicos con roles diferenciados (secretario, operadora, profesional), calendario interactivo, estadísticas con gráficos SVG y reglas de negocio complejas. Desarrollado para la Universidad Nacional de Córdoba.',
     tags: ['.NET 9', 'Angular 18', 'PostgreSQL', 'JWT', 'Docker'],
-    images: ['turnero_1.png', 'turnero_2.png', 'turnero_3.png', 'turnero_4.png'],
-    github: 'https://github.com/JoaquinRomero36',
+    images: ['turnero_1.webp', 'turnero_2.webp', 'turnero_3.webp', 'turnero_4.webp'],
+    github: 'https://github.com/JoaquinRomero36/turnos-dotnet',
   },
   {
     id: 'tiendaRopa',
@@ -46,8 +47,8 @@ const projects: Project[] = [
     description: 'Tienda online con catálogo, filtros, compra por WhatsApp y panel admin.',
     longDescription: 'Tienda online con catálogo de ropa, filtros por categoría y talle, integración de compra por WhatsApp y panel de administración con CRUD completo y autenticación JWT.',
     tags: ['.NET 10', 'Angular 19', 'PostgreSQL', 'JWT', 'AutoMapper'],
-    images: ['tienda_1.png', 'tienda_2.png', 'tienda_3.png', 'tienda_4.png'],
-    github: 'https://github.com/JoaquinRomero36',
+    images: ['tienda_1.webp', 'tienda_2.webp', 'tienda_3.webp', 'tienda_4.webp'],
+    github: 'https://github.com/JoaquinRomero36/seven-outfit',
   },
   {
     id: 'chubut',
@@ -56,8 +57,8 @@ const projects: Project[] = [
     description: 'Tres minijuegos interactivos (ruleta, trivia, memotest) para eventos reales.',
     longDescription: 'Desarrollo de tres minijuegos interactivos (ruleta, trivia y memotest) ejecutables offline, diseñados para uso real en eventos de la Lotería del Chubut. Implementación completa del frontend con lógica en TypeScript, manejo de estados y experiencia de usuario optimizada.',
     tags: ['Angular', 'TypeScript', 'HTML', 'CSS'],
-    images: ['chubut_1.png', 'chubut_2.png', 'chubut_3.png', 'chubut_4.png', 'chubut_5.png', 'chubut_6.png'],
-    github: 'https://github.com/JoaquinRomero36',
+    images: ['chubut_1.webp', 'chubut_2.webp', 'chubut_3.webp', 'chubut_4.webp', 'chubut_5.webp', 'chubut_6.webp'],
+    github: 'https://github.com/JoaquinRomero36/Minijuegos',
   },
   {
     id: 'pathfinder',
@@ -66,17 +67,67 @@ const projects: Project[] = [
     description: 'App para gestión integral de clubes de Conquistadores.',
     longDescription: 'Aplicación web para gestión integral de clubes de Conquistadores. Desarrollada de manera independiente como tesis de grado, aplicando arquitectura full stack de punta a punta con Spring Boot y Angular.',
     tags: ['Spring Boot', 'Angular', 'Java', 'REST API'],
-    images: ['pathfinder_1.png', 'pathfinder_2.png', 'pathfinder_3.png', 'pathfinder_4.png', 'pathfinder_5.png', 'pathfinder_6.png', 'pathfinder_7.png'],
-    github: 'https://github.com/JoaquinRomero36',
+    images: ['pathfinder_1.webp', 'pathfinder_2.webp', 'pathfinder_3.webp', 'pathfinder_4.webp', 'pathfinder_5.webp', 'pathfinder_6.webp', 'pathfinder_7.webp'],
+    github: 'https://github.com/JoaquinRomero36/MyPAthfinders',
   },
   {
     id: 'gym',
     title: 'Gym',
-    subtitle: 'Por definir',
-    description: 'Proyecto en desarrollo.',
-    longDescription: '',
-    tags: [],
-    images: ['gym_1.png', 'gym_2.png'],
+    subtitle: 'Sistema de Gestión',
+    description: 'Sistema de gestión de gimnasios con control de miembros, planes, pagos y rutinas.',
+    longDescription: 'Sistema de gestión integral para gimnasios con control de miembros, planes de membresía, seguimiento de pagos, asignación de rutinas personalizadas y panel administrativo.',
+    tags: ['.NET', 'Angular', 'PostgreSQL'],
+    images: ['gym_1.webp', 'gym_2.webp'],
+    github: 'https://github.com/JoaquinRomero36/Gym-SaaS',
+  },
+  {
+    id: 'yeschef',
+    title: 'YesChef',
+    subtitle: 'Gestión de Restaurantes',
+    description: 'Sistema para agilizar ventas, reservas y servicio de comida de un restaurante.',
+    longDescription: 'Sistema de gestión integral para restaurantes que agiliza el proceso de ventas, reservas y servicios de comida. Aplicación full stack con Angular 18 standalone y PWA en el frontend, y ASP.NET Core 10 sobre PostgreSQL con tiempo real en SignalR.',
+    tags: ['Angular 18', 'ASP.NET Core 10', 'PostgreSQL', 'SignalR', 'JWT', 'Docker'],
+    images: [],
+    github: 'https://github.com/JoaquinRomero36/yes-chef',
+  },
+  {
+    id: 'salesPlatform',
+    title: 'Sales Platform',
+    subtitle: 'Tótems de Venta · Mercado Argentino',
+    description: 'Plataforma de ventas con tótems/kioscos touch para el mercado argentino.',
+    longDescription: 'Plataforma de ventas self-service con tótems/interfaces touch. Frontend React 18 + Vite con Zustand y Socket.io, y backend Express con Drizzle ORM, pagos con Mercado Pago y autenticación JWT.',
+    tags: ['React', 'Express', 'Drizzle ORM', 'PostgreSQL', 'Mercado Pago', 'Socket.io'],
+    images: [],
+    github: 'https://github.com/JoaquinRomero36',
+  },
+  {
+    id: 'totems',
+    title: 'Juegos Totems',
+    subtitle: 'Juegos Suramericanos · Santa Fe 2026',
+    description: 'Minijuegos interactivos en tótems para los XIII Juegos Suramericanos.',
+    longDescription: 'Experiencias de juego (ruleta, trivia, memotest, reacción y embajador) desplegadas en tótems para los XIII Juegos Suramericanos Santa Fe 2026. Apps Angular 18 empaquetadas con Electron para ejecución offline, con descarga de credenciales por QR.',
+    tags: ['Angular 18', 'Electron', 'TypeScript', 'QR', 'Sweetalert2'],
+    images: [],
+    github: 'https://github.com/JoaquinRomero36',
+  },
+  {
+    id: 'juventud',
+    title: 'Juventud Landing',
+    subtitle: 'Landing con Backend · Córdoba',
+    description: 'Landing page con backend propio para registro y gestión de contenido.',
+    longDescription: 'Landing page para un movimiento juvenil con backend real: registro y login con JWT + bcrypt, carga de fotos con Multer y base de datos PostgreSQL vía Prisma. Empaquetada con Docker para despliegue.',
+    tags: ['Express', 'Prisma', 'PostgreSQL', 'JWT', 'Docker'],
+    images: [],
+    github: 'https://github.com/JoaquinRomero36/JuventudLanding',
+  },
+  {
+    id: 'wallpaper',
+    title: 'Wall-Paper Engenier',
+    subtitle: 'Motor de Wallpapers · Windows',
+    description: 'Motor de fondos de pantalla interactivos para Windows, clon casero de Wallpaper Engine.',
+    longDescription: 'Aplicación de escritorio que ejecuta wallpapers interactivos para Windows. Desarrollada con Electron y TypeScript, usando FFI (koffi) para integrarse con APIs nativas del sistema.',
+    tags: ['Electron', 'TypeScript', 'FFI (koffi)'],
+    images: [],
     github: 'https://github.com/JoaquinRomero36',
   },
 ]
@@ -109,7 +160,7 @@ const sectionLabels: Record<string, string> = {
   hero: 'Inicio', about: 'Sobre mí', skills: 'Skills', projects: 'Proyectos', contact: 'Contacto'
 }
 
-function Sidebar() {
+function Navbar() {
   const [active, setActive] = useState('hero')
 
   useEffect(() => {
@@ -124,47 +175,16 @@ function Sidebar() {
     return () => obs.disconnect()
   }, [])
 
-  const activeIndex = sections.indexOf(active)
-  const dropTop = activeIndex >= 0 ? activeIndex * 88 + 20 : 20
+  const items = sections.map(id => ({ label: sectionLabels[id] }))
+
+  const handleTabChange = (index: number) => {
+    const id = sections[index]
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
+  }
 
   return (
-    <nav className="fixed left-0 top-0 h-full z-50 w-24 bg-gradient-to-b from-amber-950 via-amber-900 to-amber-950 border-r border-amber-700/30 flex flex-col items-center py-8 gap-0 shadow-2xl shadow-amber-950/50">
-      <div className="relative flex flex-col items-center gap-0">
-        <div
-          className="absolute w-4 h-4 rounded-full transition-all duration-700 ease-[cubic-bezier(0.34,1.56,0.64,1)] flex items-center justify-center"
-          style={{
-            top: dropTop,
-            left: '50%',
-            marginLeft: -8,
-            background: 'radial-gradient(circle at 35% 30%, #fbbf24, #d97706)',
-            boxShadow: '0 0 12px rgba(217,119,6,0.6), inset 0 1px 2px rgba(255,255,255,0.3)',
-          }}
-        >
-          <div className="w-1.5 h-1.5 rounded-full bg-white/60" />
-        </div>
-        <div className="absolute w-[2px] rounded-full transition-all duration-700 ease-[cubic-bezier(0.34,1.56,0.64,1)]"
-          style={{
-            top: dropTop + 18,
-            height: 4,
-            left: '50%',
-            marginLeft: -1,
-            background: 'linear-gradient(to bottom, #d97706, transparent)',
-            opacity: 0.6,
-          }}
-        />
-        {sections.map((id) => (
-          <a
-            key={id}
-            href={`#${id}`}
-            className={`relative z-10 w-full h-[88px] flex flex-col items-center justify-center gap-1 text-xs font-medium tracking-widest uppercase transition-all duration-500 ${active === id ? 'text-amber-300' : 'text-amber-600/50 hover:text-amber-400/80'}`}
-          >
-            <span className={`transition-all duration-500 ${active === id ? 'scale-110 drop-shadow-[0_0_6px_rgba(251,191,36,0.5)]' : ''}`}>
-              {sectionLabels[id]}
-            </span>
-            <div className={`w-1 h-1 rounded-full transition-all duration-500 ${active === id ? 'bg-amber-400 shadow-[0_0_6px_rgba(251,191,36,0.6)]' : 'bg-transparent'}`} />
-          </a>
-        ))}
-      </div>
+    <nav className="fixed left-12 top-1/2 -translate-y-1/2 z-50">
+      <AnimatedTabBar items={items} activeIndex={sections.indexOf(active)} onTabChange={handleTabChange} />
     </nav>
   )
 }
@@ -295,15 +315,6 @@ function HexProject({ project, onSelect, x, y }: { project: Project; onSelect: (
   )
 }
 
-function HexEmpty({ x, y }: { x: number; y: number }) {
-  return (
-    <div className="absolute" style={{ width: 160, height: 184, left: x, top: y, clipPath: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)', backgroundColor: '#f59e0b' }}>
-      <div className="absolute top-[5px] left-[5px] right-[5px] bottom-[5px]"
-        style={{ backgroundColor: '#fef3c7', clipPath: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)' }} />
-    </div>
-  )
-}
-
 function ProjectModal({ project, onClose }: { project: Project; onClose: () => void }) {
   const [imageIndex, setImageIndex] = useState(0)
 
@@ -345,6 +356,8 @@ function ProjectModal({ project, onClose }: { project: Project; onClose: () => v
               <img
                 src={currentImage}
                 alt={`${project.title} screenshot ${imageIndex + 1}`}
+                loading="lazy"
+                decoding="async"
                 className="w-full h-auto max-h-[50vh] object-contain"
               />
               {project.images.length > 1 && (
@@ -400,7 +413,7 @@ function Projects() {
   return (
     <Section id="projects">
       <div className="max-w-4xl mx-auto">
-        <div className="flex items-center gap-3 mb-16">
+        <div className="flex items-center gap-3 mb-12">
           <div className="p-2 rounded-lg bg-amber-800/10 border border-amber-700/20">
             <HexIcon className="w-5 h-5 text-amber-700" />
           </div>
@@ -411,15 +424,17 @@ function Projects() {
         </div>
 
         <div className="flex justify-center">
-          <div className="relative" style={{ width: 760, height: 480 }}>
+          <div className="relative" style={{ width: 670, height: 480 }}>
             <HexProject project={projects[0]} onSelect={setSelected} x={85} y={0} />
             <HexProject project={projects[1]} onSelect={setSelected} x={255} y={0} />
-            <HexEmpty x={595} y={0} />
-            <HexEmpty x={0} y={148} />
-            <HexProject project={projects[2]} onSelect={setSelected} x={170} y={148} />
-            <HexEmpty x={340} y={148} />
-            <HexProject project={projects[3]} onSelect={setSelected} x={510} y={148} />
-            <HexProject project={projects[4]} onSelect={setSelected} x={425} y={296} />
+            <HexProject project={projects[2]} onSelect={setSelected} x={425} y={0} />
+            <HexProject project={projects[3]} onSelect={setSelected} x={0} y={148} />
+            <HexProject project={projects[4]} onSelect={setSelected} x={170} y={148} />
+            <HexProject project={projects[5]} onSelect={setSelected} x={340} y={148} />
+            <HexProject project={projects[6]} onSelect={setSelected} x={510} y={148} />
+            <HexProject project={projects[7]} onSelect={setSelected} x={85} y={296} />
+            <HexProject project={projects[8]} onSelect={setSelected} x={255} y={296} />
+            <HexProject project={projects[9]} onSelect={setSelected} x={425} y={296} />
           </div>
         </div>
       </div>
@@ -441,10 +456,7 @@ function Contact() {
             <div className="w-10 h-1 bg-amber-500/60 rounded-full mt-1.5" />
           </div>
         </div>
-        <p className="text-amber-900/70 mb-10 text-lg">
-          ¿Tenés un proyecto en mente o querés colaborar? No dudes en escribirme.
-        </p>
-        <div className="bg-white/20 backdrop-blur-sm border border-amber-200/40 rounded-2xl p-6 shadow-sm flex flex-col sm:flex-row items-center justify-center gap-4">
+        <div className="bg-white/20 backdrop-blur-sm border border-amber-200/40 rounded-2xl p-6 shadow-sm flex flex-col sm:flex-row items-center justify-center gap-4 mt-10">
           <a href="mailto:joaquinromerobeskow@gmail.com" className="bg-amber-700 hover:bg-amber-600 text-amber-50 px-6 py-3 rounded-lg font-medium transition w-full sm:w-auto text-center shadow-lg shadow-amber-700/30">
             Enviar email
           </a>
@@ -462,8 +474,8 @@ function Contact() {
 
 function App() {
   return (
-    <div className="min-h-screen pl-24">
-      <Sidebar />
+    <div className="min-h-screen">
+      <Navbar />
       <Hero />
       <About />
       <Skills />

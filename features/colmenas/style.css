@@ -1,0 +1,67 @@
+/* Configuracion general del cuerpo */
+body {
+  background-color: #fcfcfc;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Contenedor principal de la colmena */
+.colmena-container {
+  position: relative;
+  width: 760px;
+  height: 480px;
+  margin: auto;
+}
+
+/* Estructura base del hexagono (Borde naranja) */
+.hexagono {
+  position: absolute;
+  width: 160px;
+  height: 184px; /* Proporcion perfecta para hexagono vertical */
+  background-color: #ff9800; /* Color del borde naranja */
+  left: var(--x);
+  top: var(--y);
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  transition: transform 0.3s ease, filter 0.3s ease;
+  text-decoration: none;
+}
+
+/* Interior del hexagono (Fondo amarillo) */
+.hexagono-in {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  right: 5px;
+  bottom: 5px;
+  background-color: #ffeb3b; /* Color amarillo de la celda */
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+/* Texto dentro de los bloques */
+.hexagono-in span {
+  color: #333;
+  font-weight: 500;
+  font-size: 1rem;
+  text-align: center;
+  word-break: break-word;
+}
+
+/* Efecto Hover solo para los hexagonos que funcionan como enlaces (proyectos) */
+a.hexagono:hover {
+  transform: scale(1.05);
+  filter: drop-shadow(0px 10px 15px rgba(0,0,0,0.15));
+  z-index: 10; /* Se posiciona por encima al pasar el mouse */
+}
+
+a.hexagono:hover .hexagono-in {
+  background-color: #fff176; /* Un amarillo un poco mas brillante al interactuar */
+}
