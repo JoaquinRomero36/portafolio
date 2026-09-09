@@ -5,7 +5,7 @@ import AnimatedTabBar from './components/ui/animated-tab-bar'
 
 const assetsBase = import.meta.env.BASE_URL
 
-function useInView(threshold = 0.3) {
+function useInView() {
   const ref = useRef<HTMLElement>(null)
   const [inView, setInView] = useState(false)
   useEffect(() => {
@@ -13,11 +13,11 @@ function useInView(threshold = 0.3) {
     if (!el) return
     const obs = new IntersectionObserver(
       ([entry]) => { if (entry.isIntersecting) { setInView(true); obs.disconnect() } },
-      { threshold }
+      { rootMargin: '0px 0px -120px 0px', threshold: 0 },
     )
     obs.observe(el)
     return () => obs.disconnect()
-  }, [threshold])
+  }, [])
   return [ref, inView] as const
 }
 
@@ -238,7 +238,7 @@ function MobileNav() {
 
   return (
     <nav className="md:hidden fixed bottom-0 inset-x-0 z-50 flex justify-center px-3 pb-3">
-      <AnimatedTabBar items={items} activeIndex={floatIndex} onTabChange={handleTabChange} orientation="horizontal" />
+      <AnimatedTabBar items={items} activeIndex={floatIndex} onTabChange={handleTabChange} orientation="horizontal" showIndicator={false} />
     </nav>
   )
 }
@@ -268,7 +268,7 @@ function Hero() {
 }
 
 function Section({ id, children, className = '' }: { id?: string; children: React.ReactNode; className?: string }) {
-  const [ref, inView] = useInView(0.4)
+  const [ref, inView] = useInView()
   return (
     <section ref={ref} id={id} className={`min-h-screen flex items-center justify-center px-6 py-12 ${className}`} style={{ scrollSnapAlign: 'start' }}>
       <div className={`w-full transition-all duration-700 ${inView ? 'animate-fade-up' : 'section-hidden'}`}>

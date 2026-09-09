@@ -13,6 +13,7 @@ export interface AnimatedTabBarProps {
   activeIndex?: number;
   onTabChange?: (index: number) => void;
   orientation?: 'vertical' | 'horizontal';
+  showIndicator?: boolean;
 }
 
 export const AnimatedTabBar: React.FC<AnimatedTabBarProps> = ({
@@ -21,6 +22,7 @@ export const AnimatedTabBar: React.FC<AnimatedTabBarProps> = ({
   activeIndex: controlledIndex,
   onTabChange,
   orientation = 'vertical',
+  showIndicator = true,
 }) => {
   const [internalIndex, setInternalIndex] = useState(defaultIndex);
   const activeIndex = controlledIndex ?? internalIndex;
@@ -31,7 +33,7 @@ export const AnimatedTabBar: React.FC<AnimatedTabBarProps> = ({
   const offsetMenuBorder = useCallback(() => {
     const menu = menuRef.current;
     const menuBorder = menuBorderRef.current;
-    if (!menu || !menuBorder) return;
+    if (!menu || !menuBorder || !showIndicator) return;
 
     const posFor = (el: HTMLElement) =>
       orientation === "horizontal"
@@ -69,7 +71,7 @@ export const AnimatedTabBar: React.FC<AnimatedTabBarProps> = ({
         menu.style.setProperty("--timeOut", "none");
       }
     }
-  }, [activeIndex, orientation, items.length]);
+  }, [activeIndex, orientation, items.length, showIndicator]);
 
   const activeItemIndex = Number.isInteger(activeIndex) ? activeIndex : Math.floor(activeIndex);
 
@@ -122,7 +124,7 @@ export const AnimatedTabBar: React.FC<AnimatedTabBarProps> = ({
             {item.icon ?? item.label}
           </button>
         ))}
-        <div className="tabbar__border" ref={menuBorderRef}></div>
+        {showIndicator && <div className="tabbar__border" ref={menuBorderRef}></div>}
       </menu>
   );
 };
