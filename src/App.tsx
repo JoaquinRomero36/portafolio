@@ -207,16 +207,20 @@ function MobileNav() {
     const compute = () => {
       if (window.matchMedia('(min-width: 768px)').matches) return
       if (performance.now() < suppressUntil.current) return
-      const centers = sections.map((id) => {
-        const el = document.getElementById(id)
-        return el ? el.offsetTop + el.offsetHeight / 2 : 0
-      })
-      const first = centers[0]
-      const last = centers[centers.length - 1]
-      const span = Math.max(last - first, 1)
       const y = window.scrollY + window.innerHeight / 2
-      const t = Math.min(1, Math.max(0, (y - first) / span))
-      setFloatIndex(t * (sections.length - 1))
+      const n = sections.length
+      let float = n - 1
+      for (let i = 0; i < n; i++) {
+        const el = document.getElementById(sections[i])
+        if (!el) continue
+        const top = el.offsetTop
+        const bottom = el.offsetTop + el.offsetHeight
+        if (y >= top && y < bottom) {
+          float = Math.min(i + (y - top) / Math.max(bottom - top, 1), n - 1)
+          break
+        }
+      }
+      setFloatIndex(float)
     }
     compute()
     window.addEventListener('scroll', compute, { passive: true })
