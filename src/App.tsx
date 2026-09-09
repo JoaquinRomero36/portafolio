@@ -465,14 +465,13 @@ function ProjectModal({ project, onClose }: { project: Project; onClose: () => v
   )
 }
 
-function ProjectList({ onSelect }: { onSelect: (p: Project) => void }) {
+function ProjectList() {
   return (
     <div className="space-y-4">
       {projects.map((project) => (
-        <button
+        <div
           key={project.id}
-          onClick={() => onSelect(project)}
-          className="w-full text-left bg-white/20 backdrop-blur-sm border border-amber-200/40 rounded-xl p-5 hover:bg-white/30 transition"
+          className="w-full text-left bg-white/20 backdrop-blur-sm border border-amber-200/40 rounded-xl p-5"
         >
           <h3 className="text-amber-950 font-bold text-base">{project.title}</h3>
           <p className="text-amber-700 text-sm font-medium mt-0.5">{project.subtitle}</p>
@@ -484,7 +483,14 @@ function ProjectList({ onSelect }: { onSelect: (p: Project) => void }) {
               </span>
             ))}
           </div>
-        </button>
+          <a
+            href={project.github}
+            target="_blank"
+            className="inline-flex items-center gap-1 mt-4 text-amber-800 bg-amber-100/80 hover:bg-amber-200/80 px-4 py-2 rounded-lg text-sm font-medium transition"
+          >
+            Ver en GitHub →
+          </a>
+        </div>
       ))}
     </div>
   )
@@ -507,7 +513,7 @@ function Projects() {
         </div>
 
         <div className="space-y-4 md:hidden">
-          <ProjectList onSelect={setSelected} />
+          <ProjectList />
         </div>
 
         <div className="hidden md:flex justify-center">
