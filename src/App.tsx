@@ -3,6 +3,8 @@ import type { FormEvent } from 'react'
 import emailjs from '@emailjs/browser'
 import AnimatedTabBar from './components/ui/animated-tab-bar'
 
+const assetsBase = import.meta.env.BASE_URL
+
 function useInView(threshold = 0.3) {
   const ref = useRef<HTMLElement>(null)
   const [inView, setInView] = useState(false)
@@ -385,7 +387,7 @@ function ProjectModal({ project, onClose }: { project: Project; onClose: () => v
   }, [onClose, project.images.length])
 
   const currentImage = project.images.length > 0
-    ? `/images/${project.id}/${project.images[imageIndex]}`
+    ? `${assetsBase}images/${project.id}/${project.images[imageIndex]}`
     : null
 
   return (
