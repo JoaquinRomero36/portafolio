@@ -162,7 +162,7 @@ const sectionLabels: Record<string, string> = {
   hero: 'Inicio', about: 'Sobre mí', skills: 'Skills', projects: 'Proyectos', contact: 'Contacto'
 }
 
-function Navbar() {
+function useActiveSection() {
   const [active, setActive] = useState('hero')
 
   useEffect(() => {
@@ -177,6 +177,12 @@ function Navbar() {
     return () => obs.disconnect()
   }, [])
 
+  return active
+}
+
+function Navbar() {
+  const active = useActiveSection()
+
   const items = sections.map(id => ({ label: sectionLabels[id] }))
 
   const handleTabChange = (index: number) => {
@@ -185,8 +191,52 @@ function Navbar() {
   }
 
   return (
-    <nav className="fixed left-12 top-1/2 -translate-y-1/2 z-50">
+    <nav className="hidden md:flex fixed left-12 top-1/2 -translate-y-1/2 z-50">
       <AnimatedTabBar items={items} activeIndex={sections.indexOf(active)} onTabChange={handleTabChange} />
+    </nav>
+  )
+}
+
+function MobileNav() {
+  const [floatIndex, setFloatIndex] = useState(0)
+  const suppressUntil = useRef(0)
+
+  useEffect(() => {
+    const compute = () => {
+      if (window.matchMedia('(min-width: 768px)').matches) return
+      if (performance.now() < suppressUntil.current) return
+      const centers = sections.map((id) => {
+        const el = document.getElementById(id)
+        return el ? el.offsetTop + el.offsetHeight / 2 : 0
+      })
+      const first = centers[0]
+      const last = centers[centers.length - 1]
+      const span = Math.max(last - first, 1)
+      const y = window.scrollY + window.innerHeight / 2
+      const t = Math.min(1, Math.max(0, (y - first) / span))
+      setFloatIndex(t * (sections.length - 1))
+    }
+    compute()
+    window.addEventListener('scroll', compute, { passive: true })
+    window.addEventListener('resize', compute)
+    return () => {
+      window.removeEventListener('scroll', compute)
+      window.removeEventListener('resize', compute)
+    }
+  }, [])
+
+  const items = sections.map(id => ({ label: sectionLabels[id] }))
+
+  const handleTabChange = (index: number) => {
+    setFloatIndex(index)
+    suppressUntil.current = performance.now() + 900
+    const id = sections[index]
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
+  }
+
+  return (
+    <nav className="md:hidden fixed bottom-0 inset-x-0 z-50 flex justify-center px-3 pb-3">
+      <AnimatedTabBar items={items} activeIndex={floatIndex} onTabChange={handleTabChange} orientation="horizontal" />
     </nav>
   )
 }
@@ -196,13 +246,13 @@ function Hero() {
     <section id="hero" className="min-h-screen flex items-center justify-center px-6" style={{ scrollSnapAlign: 'start' }}>
       <div className="animate-fade-up text-center max-w-3xl">
 
-        <h1 className="text-5xl sm:text-6xl font-bold text-amber-950 mb-6 leading-tight">
+        <h1 className="text-3xl sm:text-5xl md:text-6xl font-bold text-amber-950 mb-6 leading-tight">
           Hola, soy <span className="text-amber-700">Joaquín Romero</span>
         </h1>
-        <p className="text-lg sm:text-xl text-amber-900/70 mb-10 leading-relaxed max-w-2xl mx-auto">
+        <p className="text-base sm:text-lg md:text-xl text-amber-900/70 mb-10 leading-relaxed max-w-2xl mx-auto">
           Desarrollador Full Stack · Técnico en Programación egresado de UTN. Especializado en Angular, TypeScript y .NET.
         </p>
-        <div className="flex items-center justify-center gap-4">
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
           <a href="#projects" className="bg-amber-700 hover:bg-amber-600 text-amber-50 px-6 py-3 rounded-lg font-medium transition shadow-lg shadow-amber-700/30">
             Ver proyectos
           </a>
@@ -239,7 +289,7 @@ function About() {
             <div className="w-10 h-1 bg-amber-500/60 rounded-full mt-1.5" />
           </div>
         </div>
-        <div className="bg-white/20 backdrop-blur-sm border border-amber-200/40 rounded-2xl p-8 space-y-5 text-lg text-amber-900/80 leading-relaxed shadow-sm">
+        <div className="bg-white/20 backdrop-blur-sm border border-amber-200/40 rounded-2xl p-5 md:p-8 space-y-5 text-base md:text-lg text-amber-900/80 leading-relaxed shadow-sm">
           <p>
             Técnico en Programación egresado de la UTN, con formación en desarrollo web full stack y experiencia práctica en proyectos reales para clientes. He desarrollado aplicaciones completas listas para producción.
           </p>
@@ -341,7 +391,7 @@ function ProjectModal({ project, onClose }: { project: Project; onClose: () => v
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4" onClick={onClose}>
       <div className="relative bg-amber-50 rounded-2xl max-w-lg w-full max-h-[80vh] overflow-y-auto shadow-xl" onClick={e => e.stopPropagation()}>
-        <button onClick={onClose} className="absolute top-4 right-4 z-10 bg-amber-200 hover:bg-amber-300 text-amber-800 rounded-full w-8 h-8 flex items-center justify-center text-lg font-bold leading-none shadow-sm transition">
+        <button onClick={onClose} aria-label="Cerrar" className="absolute top-4 right-4 z-10 bg-amber-200 hover:bg-amber-300 text-amber-800 rounded-full w-10 h-10 flex items-center justify-center text-lg font-bold leading-none shadow-sm transition">
           ×
         </button>
         <div className="p-6">
@@ -409,6 +459,31 @@ function ProjectModal({ project, onClose }: { project: Project; onClose: () => v
   )
 }
 
+function ProjectList({ onSelect }: { onSelect: (p: Project) => void }) {
+  return (
+    <div className="space-y-4">
+      {projects.map((project) => (
+        <button
+          key={project.id}
+          onClick={() => onSelect(project)}
+          className="w-full text-left bg-white/20 backdrop-blur-sm border border-amber-200/40 rounded-xl p-5 hover:bg-white/30 transition"
+        >
+          <h3 className="text-amber-950 font-bold text-base">{project.title}</h3>
+          <p className="text-amber-700 text-sm font-medium mt-0.5">{project.subtitle}</p>
+          <p className="text-amber-900/70 text-sm mt-2 line-clamp-2">{project.description}</p>
+          <div className="flex flex-wrap gap-1.5 mt-3">
+            {project.tags.slice(0, 3).map((tag) => (
+              <span key={tag} className="bg-amber-100/80 text-amber-800 px-2 py-0.5 rounded text-xs font-medium border border-amber-200/50">
+                {tag}
+              </span>
+            ))}
+          </div>
+        </button>
+      ))}
+    </div>
+  )
+}
+
 function Projects() {
   const [selected, setSelected] = useState<Project | null>(null)
 
@@ -425,7 +500,11 @@ function Projects() {
           </div>
         </div>
 
-        <div className="flex justify-center">
+        <div className="space-y-4 md:hidden">
+          <ProjectList onSelect={setSelected} />
+        </div>
+
+        <div className="hidden md:flex justify-center">
           <div className="relative" style={{ width: 670, height: 480 }}>
             <HexProject project={projects[0]} onSelect={setSelected} x={85} y={0} />
             <HexProject project={projects[1]} onSelect={setSelected} x={255} y={0} />
@@ -528,7 +607,7 @@ function Contact() {
             <div className="w-10 h-1 bg-amber-500/60 rounded-full mt-1.5" />
           </div>
         </div>
-        <div className="bg-white/20 backdrop-blur-sm border border-amber-200/40 rounded-2xl p-6 shadow-sm mt-10">
+        <div className="bg-white/20 backdrop-blur-sm border border-amber-200/40 rounded-2xl p-4 md:p-6 shadow-sm mt-10">
           <ContactForm />
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-6 pt-6 border-t border-amber-200/40">
             <a href="https://github.com/JoaquinRomero36" target="_blank" className="border border-amber-300 hover:border-amber-500 bg-white/30 hover:bg-white/50 text-amber-800 px-6 py-3 rounded-lg font-medium transition w-full sm:w-auto text-center">
@@ -546,8 +625,9 @@ function Contact() {
 
 function App() {
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen pb-20 md:pb-0">
       <Navbar />
+      <MobileNav />
       <Hero />
       <About />
       <Skills />

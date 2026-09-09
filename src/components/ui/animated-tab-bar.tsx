@@ -12,6 +12,7 @@ export interface AnimatedTabBarProps {
   defaultIndex?: number;
   activeIndex?: number;
   onTabChange?: (index: number) => void;
+  orientation?: 'vertical' | 'horizontal';
 }
 
 export const AnimatedTabBar: React.FC<AnimatedTabBarProps> = ({
@@ -19,6 +20,7 @@ export const AnimatedTabBar: React.FC<AnimatedTabBarProps> = ({
   defaultIndex = 0,
   activeIndex: controlledIndex,
   onTabChange,
+  orientation = 'vertical',
 }) => {
   const [internalIndex, setInternalIndex] = useState(defaultIndex);
   const activeIndex = controlledIndex ?? internalIndex;
@@ -27,19 +29,49 @@ export const AnimatedTabBar: React.FC<AnimatedTabBarProps> = ({
   const itemRefs = useRef<(HTMLButtonElement | null)[]>([]);
 
   const offsetMenuBorder = useCallback(() => {
-    const activeItem = itemRefs.current[activeIndex];
     const menu = menuRef.current;
     const menuBorder = menuBorderRef.current;
+    if (!menu || !menuBorder) return;
 
-    if (activeItem && menu && menuBorder) {
-      const top = Math.floor(
-        activeItem.offsetTop -
-          menuBorder.offsetTop +
-          (activeItem.offsetHeight - menuBorder.offsetHeight) / 2
-      );
-      menuBorder.style.transform = `translate3d(0, ${top}px, 0)`;
+    const posFor = (el: HTMLElement) =>
+      orientation === "horizontal"
+        ? Math.floor(
+            el.offsetLeft -
+              menuBorder.offsetLeft +
+              (el.offsetWidth - menuBorder.offsetWidth) / 2
+          )
+        : Math.floor(
+            el.offsetTop -
+              menuBorder.offsetTop +
+              (el.offsetHeight - menuBorder.offsetHeight) / 2
+          );
+
+    const apply = (p: number) => {
+      menuBorder.style.transform =
+        orientation === "horizontal"
+          ? `translate3d(${p}px, 0, 0)`
+          : `translate3d(0, ${p}px, 0)`;
+    };
+
+    if (Number.isInteger(activeIndex)) {
+      const activeItem = itemRefs.current[activeIndex];
+      if (activeItem) {
+        apply(posFor(activeItem));
+        menu.style.removeProperty("--timeOut");
+      }
+    } else {
+      const floor = Math.floor(activeIndex);
+      const frac = activeIndex - floor;
+      const a = itemRefs.current[floor];
+      const b = itemRefs.current[Math.min(floor + 1, items.length - 1)];
+      if (a && b) {
+        apply(Math.floor(posFor(a) + (posFor(b) - posFor(a)) * frac));
+        menu.style.setProperty("--timeOut", "none");
+      }
     }
-  }, [activeIndex]);
+  }, [activeIndex, orientation, items.length]);
+
+  const activeItemIndex = Number.isInteger(activeIndex) ? activeIndex : Math.floor(activeIndex);
 
   useLayoutEffect(() => {
     offsetMenuBorder();
@@ -49,6 +81,11 @@ export const AnimatedTabBar: React.FC<AnimatedTabBarProps> = ({
         menuStyle.setProperty("--timeOut", "none");
       }
       offsetMenuBorder();
+      requestAnimationFrame(() => {
+        if (menuRef.current) {
+          menuRef.current.style.removeProperty("--timeOut");
+        }
+      });
     };
 
     window.addEventListener("resize", handleResize);
@@ -63,7 +100,7 @@ export const AnimatedTabBar: React.FC<AnimatedTabBarProps> = ({
       const menuStyle = menuRef.current.style;
       menuStyle.removeProperty("--timeOut");
     }
-    if (activeIndex === index) return;
+    if (activeItemIndex === index) return;
     setInternalIndex(index);
     if (onTabChange) {
       onTabChange(index);
@@ -71,16 +108,16 @@ export const AnimatedTabBar: React.FC<AnimatedTabBarProps> = ({
   };
 
   return (
-    <menu className="tabbar" ref={menuRef}>
+    <menu className={`tabbar${orientation === 'horizontal' ? ' tabbar--horizontal' : ''}`} ref={menuRef}>
         {items.map((item, index) => (
           <button
             key={index}
             ref={(el) => { itemRefs.current[index] = el }}
             style={{ "--bgColorItem": item.color ?? "#f59e0b" } as React.CSSProperties}
-            className={`tabbar__item ${activeIndex === index ? "active" : ""}`}
+            className={`tabbar__item ${activeItemIndex === index ? "active" : ""}`}
             onClick={() => handleItemClick(index)}
             aria-label={item.label ?? `Tab ${index + 1}`}
-            aria-current={activeIndex === index ? "page" : undefined}
+            aria-current={activeItemIndex === index ? "page" : undefined}
           >
             {item.icon ?? item.label}
           </button>
